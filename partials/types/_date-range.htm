@@ -1,0 +1,32 @@
+<div class="div">
+    <input type="date" name="<?=$formName?>[<?=$originalName?>_from]" placeholder="<?=isset($field['placeholder'])?$this->trans($field['placeholder']):''?>"
+    <?php if(isset($field['attributes']) && is_array($field['attributes'])):?>
+    <?php foreach($field['attributes'] as $key => $value): ?>
+    <?=$key?>="<?=$value?>"
+    <?php endforeach ?>
+    <?php endif ?>
+    >
+
+    <?php
+        $fieldIds = isset($field['attributes']['id'])?$field['attributes']['id']:'';
+        $explodeIds = explode(" ", $fieldIds);
+        $field['attributes']['id'] = '';
+        $newIds = '';
+        if(is_array($explodeIds)){
+            foreach($explodeIds as $fieldId){
+                if(strlen(trim($fieldId))){
+                    $newIds .= $fieldId.'-2';
+                }
+            }
+        }
+
+        $field['attributes']['id']  = $newIds;
+    ?>
+    <input type="date" name="<?=$formName?>[<?=$originalName?>_to]" placeholder="<?=isset($field['placeholder'])?$this->trans($field['placeholder']):''?>"
+    <?php if(isset($field['attributes']) && is_array($field['attributes'])):?>
+    <?php foreach($field['attributes'] as $key => $value): ?>
+    <?=$key?>="<?=$value?>"
+    <?php endforeach ?>
+    <?php endif ?>
+    >
+</div>

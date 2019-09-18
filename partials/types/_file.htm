@@ -1,0 +1,75 @@
+<label for="<?=$uniqueIdKey?>"
+       class="<?=isset($setting['field_label'])?$setting['field_label']:''?> <?=isset($fieldSetting['label'])?$fieldSetting['label']:''?>"
+
+>
+    <span><?=isset($field['label'])?$this->trans($field['label']):''?></span>
+    <div class="<?=isset($field['mode'])?$field['mode']:''?>">
+        <?php
+            $multiple = isset($field['multiple'])?'multiple':'single';
+            $field['attributes']['class']  = isset($field['attributes']['class'])?$field['attributes']['class'].' upload-'.$multiple:'';
+        ?>
+        <input type="file" name="<?=$name?><?=isset($field['multiple'])?'[]':''?>" id="<?=$uniqueIdKey?>"
+               placeholder="<?=isset($field['placeholder'])?$field['placeholder']:''?>"
+               onchange="loadFilePreview(this)"
+        <?=isset($field['multiple'])?'multiple':''?>
+        <?php if(isset($field['attributes']) && is_array($field['attributes'])):?>
+        <?php foreach($field['attributes'] as $key => $value): ?>
+        <?=$key?>="<?=$value?>"
+        <?php endforeach ?>
+        <?php endif ?>
+        >
+    </div>
+</label>
+<div id="<?=$uniqueIdKey?>-uploads" data-hidedelete="<?=(isset($field['hidedelete']) && $field['hidedelete'])?'1':'0'?>"
+     data-hidefilename="<?=(isset($field['hidefilename']) && $field['hidefilename'])?'1':'0'?>"
+     data-mode="<?=isset($field['mode'])?$field['mode']:'file'?>"
+     data-multiple="<?=isset($field['multiple'])?'1':'0'?>"
+     class="formyaml-upload-container <?=isset($field['mode'])?'mode-'.$field['mode']:'mode-file'?>">
+
+
+    <?php if(isset($values[$originalName])):?>
+
+
+<?php if(is_iterable($values[$originalName])): ?>
+
+    <?php foreach($values[$originalName] as $file): ?>
+
+
+    <div id="frm-file-<?=$file->id ?>"
+    <?php if (isset($field['mode']) && $field['mode'] == 'image'):?> style="background-image: url(<?=$file->
+    getThumb(100,100,['mode'=>'crop'])?>);" <?php endif?>>
+
+    <span <?php if(isset($field['hidefilename']) && $field['hidefilename']):?> style="display:none" <?php endif?>
+    ><?=$file->file_name?></span>
+    <a <?php if(isset($field['hidedelete']) && $field['hidedelete']):?> style="display:none" <?php endif?>
+    data-request="onDeleteFile" data-request-data="name:'<?=$file->disk_name?>'" data-request-confirm="DELETE_FILE?"
+    data-request-success="$('#frm-file-<?=$file->id?>').remove()"
+    >✖</a>
+    <input type="hidden" name="<?=$name?><?=isset($field['multiple'])?'[]':''?>" value="<?=$file->id?>">
+
+</div>
+<?php endforeach ?>
+<?php else: ?>
+<?php $file = $values[$originalName]; ?>
+<div id="frm-file-<?=$file->id?>" <?php if (isset($field['mode']) && $field['mode'] == 'image'):?> style="background-image: url(<?=$file->getThumb(100,100,['mode'=>'crop'])?>);" <?php endif?>>
+
+<span <?php if(isset($field['hidefilename']) && $field['hidefilename']):?> style="display:none" <?php endif?>><?=$file->file_name?></span>
+<a <?php if(isset($field['hidedelete']) && $field['hidedelete']):?> style="display:none" <?php endif?> data-request="onDeleteFile" data-request-data="name:'<?=$file->disk_name?>'"  data-request-confirm="DELETE_FILE?"
+data-request-success="$('#frm-file-<?=$file->id?>').remove()"
+>✖</a>
+<input type="hidden" name="<?=$name?><?=isset($field['multiple'])?'[]':''?>" value="<?=$file->id?>">
+
+</div>
+
+<?php endif?>
+
+
+<?php endif ?>
+
+
+</div>
+<!--
+mode:
+preview:
+multiple:
+-->

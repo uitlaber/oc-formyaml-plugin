@@ -1,0 +1,40 @@
+fields:
+    wrapper:
+        label: 'Класс общая обертка'
+        span: auto
+        type: text
+    field_wrapper:
+        label: 'Класс для обертки полей'
+        span: auto
+        type: text
+    field_label:
+        label: 'Класс для label'
+        span: auto
+        type: text
+    field:
+        label: Поля
+        prompt: 'Добавить поле'
+        span: left
+        type: repeater
+        form:
+            fields:
+                type:
+                    label: 'Тип поля'
+                    span: full
+                    type: dropdown
+                wrapper:
+                    label: 'Класс общая обертка'
+                    span: auto
+                    type: text
+                class:
+                    label: 'Класс поля'
+                    span: auto
+                    type: text
+                label:
+                    label: 'Класс для label'
+                    span: auto
+                    type: text
+                next_wrapper:
+                    label: 'Класс для обертки поля'
+                    span: auto
+                    type: text

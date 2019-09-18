@@ -1,0 +1,65 @@
+
+
+<form data-request="<?=$requestName?>" data-request-validate="" data-request-flash=""  
+<?php if(isset($form['confirm'])):?>
+data-request-confirm="<?=$form['confirm']?>"
+<?php endif ?>
+
+<?php if(isset($form['success'])):?>
+data-request-success="<?=$form['success']?>"
+<?php endif ?>
+
+>
+<div class="row">
+    <?php if(count($params)):?>
+    <?php  foreach ($params as $key => $param):?>
+    <input type="hidden" name="<?=$formName.'['.$key.']'?>" value="<?=$param?>">
+    <?php endforeach ?>
+    <?php endif ?>
+    <?php foreach ($form['fields'] as $key => $field):?>
+  
+    <?php
+          $random = str_random(20);
+          $originalName = $key;
+          $type = isset($field['type'])?$field['type']:'text';
+          $wrapper = isset($field['wrapper'])?$field['wrapper']:'';
+          $mode = isset($field['mode'])?'mode-'.$field['mode']:'';
+          $fieldWrapper = isset($field['field_wrapper'])?$field['field_wrapper']:'';
+          $setting = $this->globalSetting();
+    $fieldSetting = $this->fieldSetting($type);
+    $name = "{$formName}[{$key}]";
+    $uniqueIdKey = $formName.'-'.$key.$random;
+    $preview = isset($field['preview'])?'has-preview':'';
+    ?>
+    <div class="<?=isset($setting['wrapper'])?$setting['wrapper']:''?> <?=isset($fieldSetting['wrapper'])?$fieldSetting['wrapper']:''?> <?=$wrapper?>  ">
+        <?php if(isset($field['label']) && $type != 'file' && $type != 'checkbox'):?>
+        <label for="<?=$uniqueIdKey?>" class="<?=isset($setting['field_label'])?$setting['field_label']:''?> <?=isset($fieldSetting['label'])?$fieldSetting['label']:''?>">
+            <?=$this->trans($field['label'])?> <?=isset($field['required'])?'<span class="field-required">*</span>':''?>
+        </label>
+        <?php endif ?>
+        <div class="formyaml-<?=$type?> <?=isset($setting['field_wrapper'])?$setting['field_wrapper']:''?> <?=isset($fieldSetting['next_wrapper'])?$fieldSetting['next_wrapper']:''?> <?=$fieldWrapper?> <?=$mode?> <?=$preview?>">
+            <?php
+                $fieldSettingClass = isset($fieldSetting['class'])?$fieldSetting['class']:'';
+                $fieldClass = isset($field['attributes']['class'])?$field['attributes']['class']:'';
+                $fieldId = isset($field['attributes']['id'])?$field['attributes']['id']:'';
+                $field['attributes']['class'] = $fieldSettingClass.' '.$fieldClass;
+                $field['attributes']['id'] = $uniqueIdKey.' '.$fieldId;
+            ?>
+            <?=$this->makePartial('types/'.$type, compact('field','name','originalName','formName','fieldSetting','uniqueIdKey','values','setting')) ?>
+            <div data-validate-for="<?=$key?>" class="invalid-feedback"></div>
+        </div>
+
+    </div>
+
+    <?php endforeach?>
+
+    <?php if (isset($form['buttons']) && count($form['buttons'])):?>
+    <div class="formyaml-buttons col-md-12">
+        <?php foreach ($form['buttons'] as $key => $button):?>
+        <?=$this->makePartial('buttons/'.$key, compact('button'))?>
+        <?php endforeach ?>
+    </div>
+    <?php endif ?>
+
+</div>
+</form>

@@ -1,0 +1,12 @@
+<label for="<?=$uniqueIdKey?>" class="<?=isset($setting['field_label'])?$setting['field_label']:''?> <?=isset($fieldSetting['label'])?$fieldSetting['label']:''?>">
+    <input type="checkbox" name="<?=$name?>" placeholder="<?=isset($field['placeholder'])?$this->trans($field['placeholder']):''?>"
+           id="<?=$uniqueIdKey?>"
+    <?php if(isset($field['attributes']) && is_array($field['attributes'])):?>
+    <?php foreach($field['attributes'] as $key => $value): ?>
+    <?=$key?>="<?=$value?>"
+    <?php endforeach ?>
+    <?php endif ?>
+    required
+    >
+    <span class="custom-control-label"><a href="<?=isset($field['link'])?$field['link']:''?>" target="_blank"><?=isset($field['text'])?$this->trans($field['text']):''?></a> <?=isset($field['required'])?'<span class="field-required">*</span>':''?></span>
+</label>

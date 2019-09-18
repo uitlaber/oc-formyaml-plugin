@@ -1,0 +1,6 @@
+<textarea name="<?=$name?>" placeholder="<?=isset($field['placeholder'])?$this->trans($field['placeholder']):''?>"
+<?php if(isset($field['attributes']) && is_array($field['attributes'])):?>
+<?php foreach($field['attributes'] as $key => $value): ?>
+<?=$key?>="<?=$value?>"
+<?php endforeach ?>
+<?php endif ?>><?=(isset($values[$originalName]))?$values[$originalName]:''?></textarea>

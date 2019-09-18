@@ -1,0 +1,8 @@
+<button
+<?=isset($button['type'])?"type='{$button['type']}'":''?>
+<?php if(isset($button['attributes']) && is_array($button['attributes'])):?>
+<?php foreach($button['attributes'] as $key => $value): ?>
+<?=$key?>="<?=$value?>"
+<?php endforeach ?>
+<?php endif ?>
+><?=isset($button['text'])?$this->trans($button['text']):''?></button>
