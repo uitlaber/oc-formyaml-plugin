@@ -9,6 +9,7 @@ use Uit\Formyaml\Models\Settings;
 use ValidationException;
 use Validator;
 
+
 class FormBuilder
 {
     use ViewMaker;
@@ -65,8 +66,8 @@ class FormBuilder
 
     public function trans($string, $params = [])
     {
-        return $string;
-        //return Message::trans($string, $params);
+//        return $string;
+        return Message::trans($string, $params);
     }
 
 

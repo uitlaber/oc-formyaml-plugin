@@ -2,13 +2,13 @@
        class="<?=isset($setting['field_label'])?$setting['field_label']:''?> <?=isset($fieldSetting['label'])?$fieldSetting['label']:''?>"
 
 >
-    <span><?=isset($field['label'])?$this->trans($field['label']):''?></span>
+    <span class="btn btn-azure"><?=isset($field['label'])?$this->trans($field['label']):''?></span>
     <div class="<?=isset($field['mode'])?$field['mode']:''?>">
         <?php
             $multiple = isset($field['multiple'])?'multiple':'single';
             $field['attributes']['class']  = isset($field['attributes']['class'])?$field['attributes']['class'].' upload-'.$multiple:'';
         ?>
-        <input type="file" name="<?=$name?><?=isset($field['multiple'])?'[]':''?>" id="<?=$uniqueIdKey?>"
+        <input type="file" style="opacity: 0;" name="<?=$name?><?=isset($field['multiple'])?'[]':''?>" id="<?=$uniqueIdKey?>"
                placeholder="<?=isset($field['placeholder'])?$field['placeholder']:''?>"
                onchange="loadFilePreview(this)"
         <?=isset($field['multiple'])?'multiple':''?>
@@ -57,7 +57,7 @@
 <a <?php if(isset($field['hidedelete']) && $field['hidedelete']):?> style="display:none" <?php endif?> data-request="onDeleteFile" data-request-data="name:'<?=$file->disk_name?>'"  data-request-confirm="DELETE_FILE?"
 data-request-success="$('#frm-file-<?=$file->id?>').remove()"
 >✖</a>
-<input type="hidden" name="<?=$name?><?=isset($field['multiple'])?'[]':''?>" value="<?=$file->id?>">
+<input type="hidden" style="opacity: 0"  name="<?=$name?><?=isset($field['multiple'])?'[]':''?>" value="<?=$file->id?>">
 
 </div>
 
