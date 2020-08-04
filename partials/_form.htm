@@ -16,13 +16,15 @@ data-request-success="<?=$form['success']?>"
     <input type="hidden" name="<?=$formName.'['.$key.']'?>" value="<?=$param?>">
     <?php endforeach ?>
     <?php endif ?>
+
+    <?php if(isset($form['fields'])): ?>
     <?php foreach ($form['fields'] as $key => $field):?>
   
     <?php
           $random = str_random(20);
           $originalName = $key;
           $type = isset($field['type'])?$field['type']:'text';
-          $wrapper = isset($field['wrapper'])?$field['wrapper']:'';
+          $wrapper = isset($field['wrapper'])&&!empty($field['wrapper'])?$field['wrapper']:'col-12';
           $mode = isset($field['mode'])?'mode-'.$field['mode']:'';
           $fieldWrapper = isset($field['field_wrapper'])?$field['field_wrapper']:'';
           $setting = $this->globalSetting();
@@ -52,7 +54,8 @@ data-request-success="<?=$form['success']?>"
     </div>
 
     <?php endforeach?>
-
+    <?php endif ?>
+    
     <?php if (isset($form['buttons']) && count($form['buttons'])):?>
     <div class="formyaml-buttons col-md-12">
         <?php foreach ($form['buttons'] as $key => $button):?>
