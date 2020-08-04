@@ -1,4 +1,4 @@
-<input type="email" name="<?=$name?>" placeholder="<?=isset($field['placeholder'])?$field['placeholder']:''?>"
+<input type="email" name="<?=$name?>" placeholder="<?=isset($field['placeholder'])?$this->trans($field['placeholder']):''?>"
 value="<?=(isset($values[$originalName]))?$values[$originalName]:''?>"
 <?php if(isset($field['attributes']) && is_array($field['attributes'])):?>
     <?php foreach($field['attributes'] as $key => $value): ?>

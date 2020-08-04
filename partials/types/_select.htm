@@ -1,4 +1,4 @@
-<select name="<?=$name?>" placeholder="<?=isset($field['placeholder'])?$field['placeholder']:''?>"
+<select name="<?=$name?>" placeholder="<?=isset($field['placeholder'])?$this->trans($field['placeholder']):''?>"
 <?php if(isset($field['attributes']) && is_array($field['attributes'])):?>
 <?php foreach($field['attributes'] as $key => $value): ?>
 <?=$key?>="<?=$value?>"
@@ -11,6 +11,7 @@
 <?=(isset($values[$originalName]) &&  $values[$originalName]== $value )?'selected':''  ?>
 
 ><?=$this->trans($label)?></option>
-<?endforeach?>
-</select>
+<?php endforeach?>
 <?php endif?>
+</select>
+
