@@ -1,0 +1,28 @@
+<?php if(isset($field['options']) && is_array($field['options'])):?>
+
+<?php $radioId = 0;?>
+<?php foreach($field['options'] as $value => $label):?>
+
+<?php $radioId++;?>
+<div class="form-check">
+
+  <input class="form-check-input" type="radio" name="<?=$name?>" id="<?=$uniqueIdKey.$radioId?>" value="<?=$value?>" 
+
+  <?php if(isset($values[$originalName])):?>
+    <?php if($values[$originalName]== $value):?>
+      checked
+    <?php endif ?>
+  <?php else: ?>
+    <?php if(isset($field['default']) && $field['default'] == $value ):?>
+      checked
+    <?php endif ?>
+  <?php endif ?>
+
+  >
+  <label class="form-check-label" for="<?=$uniqueIdKey.$radioId?>">
+    <?=$label?>
+  </label>
+</div>
+</option>
+<?endforeach?>
+<?php endif?>
