@@ -1,3 +1,10 @@
+<?php
+
+    if(!is_array($field['options']) ){
+        $field['options'] = (new $field['options'])->pluck('name','id')->toArray();
+    }
+?>
+
 <select name="<?=$name?>" placeholder="<?=isset($field['placeholder'])?$this->trans($field['placeholder']):''?>"
 <?php if(isset($field['attributes']) && is_array($field['attributes'])):?>
 <?php foreach($field['attributes'] as $key => $value): ?>
@@ -7,8 +14,10 @@
 >
 <?php if(isset($field['options']) && is_array($field['options'])):?>
 <?php foreach($field['options'] as $value => $label):?>
-<option value="<?=$value?>" 
-<?=(isset($values[$originalName]) &&  $values[$originalName]== $value )?'selected':''  ?>
+<option value="<?=$value?>"
+<?=(isset($values[$originalName]) && !is_null($values[$originalName]) && $values[$originalName]== $value
+ || isset($values[$originalName]) && !is_null($values[$originalName]) &&  is_array($values[$originalName]) && in_array($value, $values[$originalName] )
+ )?'selected':''  ?>
 
 ><?=$this->trans($label)?></option>
 <?php endforeach?>
