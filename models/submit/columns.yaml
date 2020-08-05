@@ -1,0 +1,18 @@
+columns:
+    id:
+        label: id
+        type: number
+    event:
+        label: event
+        type: text
+    user_name:
+        label: Пользователь
+        type: text
+        select: name
+        relation: user
+    created_at:
+        label: created_at
+        type: datetime
+    updated_at:
+        label: updated_at
+        type: datetime

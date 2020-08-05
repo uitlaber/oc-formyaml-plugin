@@ -1,0 +1,44 @@
+fields:
+    event:
+        label: 'Название формы'
+        span: auto
+        type: text
+    created_at:
+        label: 'Дата добавления'
+        mode: datetime
+        span: auto
+        readOnly: 1
+        type: datepicker
+    user:
+        label: Пользователь
+        nameFrom: name
+        descriptionFrom: email
+        list: $/rainlab/user/models/user/columns.yaml
+        span: auto
+        type: recordfinder
+    content:
+        label: 'Веденные данные'       
+        span: full
+        type: datatable
+        columns:
+            key: 
+                type: string
+                title: Ключь
+            label: 
+                type: string
+                title: Ключь                
+            value:
+                type: string
+                title: Значение
+
+    info:
+        label: 'Дополнительная информация'
+        span: full
+        type: datatable
+        columns:
+            key: 
+                type: string
+                title: Ключь
+            value:
+                type: string
+                title: Значение

@@ -1,0 +1,13 @@
+plugin:
+    name: 'uit.formyaml::lang.plugin.name'
+    description: 'uit.formyaml::lang.plugin.description'
+    author: uit
+    icon: oc-icon-adjust
+    homepage: ''
+navigation:
+    main-menu-item:
+        label: 'Логи форм'
+        url: /uit/formyaml/submits
+        icon: icon-database
+        permissions:
+            - formyaml.submits

@@ -2,10 +2,14 @@
 
 use Cms\Classes\ComponentBase;
 use System\Models\File;
-use ValidationException;
 use Validator;
+use ValidationException;
 use Input;
 use Auth;
+use Event;
+use Uit\Formyaml\Classes\FormBuilder;
+use Uit\Formyaml\Models\Submit;
+
 
 class Formyaml extends ComponentBase
 {
@@ -29,9 +33,7 @@ class Formyaml extends ComponentBase
     }
 
     public function onUpload()
-    {
-        $user = Auth::getUser();
-        
+    {        
         if (post('type') == 'image') {
             $rules = [
                 'file' => 'image|max:5120',
@@ -79,5 +81,88 @@ class Formyaml extends ComponentBase
             return ($e != post('name'));
         });
         session()->put('uploaded_files', implode(',', array_filter($sessionFiles)));
+    }
+
+    public function onSubmit(){      
+       
+        $eventName = post('event');
+        $time = time();
+        $data = post($eventName, []);
+        foreach ($data as $key => $val) {
+            $data['field_'.$key] = $val;
+            unset($data[$key]);
+        }
+       
+        $user = Auth::getUser();
+        Event::fire('before-store.'.$eventName, [$data, $user, $time]);
+
+        $fb = new FormBuilder();
+        $fb->parseYaml($eventName);
+        $form = $fb->form;
+
+        if(!isset($form['fields']) || !count($form['fields'])) return;
+
+        $fields = $form['fields'];     
+        
+        $rules = [];
+        $attributes = [];
+        $clearData = [];
+        $info = [];
+
+        foreach($fields as $key => $field){
+            $keyModifid = 'field_'.$key;
+            $required = '';
+            $attributes[$keyModifid] = $field['label'];
+            if(isset($field['required']) && $field['required']){
+                $required = 'required';
+            }
+            if(isset($field['rules']) && !empty($field['rules'])){
+                
+                $rules[$keyModifid] = [$required] + explode('|',$field['rules']);
+              
+            }elseif(!empty($required)){
+                $rules[$keyModifid] = [$required];
+            }
+            
+            if(isset($data[$keyModifid])){              
+                $clearData[$keyModifid] = [
+                    'key' => $key,
+                    'label' => $field['label'], 
+                    'value' => $data[$keyModifid], 
+                ];
+            }
+        }
+
+       
+        // dd(session()->get($form['name']));
+        $validation = Validator::make($data, $rules, [], $attributes);
+        if ($validation->fails()) {
+            throw new ValidationException($validation);
+        }
+
+        if(isset($form['multistep']) && $form['multistep']){
+            if( $sessionData =  session()->get($form['name'])){
+                $clearData = array_merge($clearData, $sessionData);
+            }
+            session()->put($form['name'],$clearData);
+        }
+
+        if(isset($form['multistep']) && !post('multistep-finish', false)){
+            return;
+        }
+
+       
+        $submit = Submit::create([
+            'event' => $eventName,
+            'user_id' => (!is_null($user))?$user->id:null,
+            'content' => array_values($clearData),
+            'info' => $info
+        ]);
+        if(isset($form['multistep']) && post('multistep-finish', false)){
+            Event::fire('after-store-multistep.'.$eventName,  [$data, $user, $submit, $time]);
+        }else{
+            Event::fire('after-store.'.$eventName,  [$data, $user, $submit, $time]);
+        }   
+        return $submit; 
     }
 }

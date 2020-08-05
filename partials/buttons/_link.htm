@@ -1,8 +1,12 @@
 <a href="<?=isset($button['href'])?$button['href']:''?>"
 <?=isset($button['type'])?"type='{$button['type']}'":''?>
 <?php if(isset($button['attributes']) && is_array($button['attributes'])):?>
-<?php foreach($button['attributes'] as $key => $value): ?>
-<?=$key?>="<?=$value?>"
-<?php endforeach ?>
+
+    <?php foreach($button['attributes'] as $attr): ?>
+    
+     <?=(isset($attr['key']))?$attr['key']:''?>="<?=(isset($attr['value']))?$attr['value']:''?>"
+    
+    <?php endforeach ?>
+
 <?php endif ?>
 ><?=isset($button['text'])?$this->trans($button['text']):''?></a>

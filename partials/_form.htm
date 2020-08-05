@@ -1,6 +1,4 @@
-
-
-<form data-request="<?=$requestName?>" data-request-validate="" data-request-flash=""  
+<form data-request="onSubmit" data-request-validate="" data-request-flash=""   
 <?php if(isset($form['confirm'])):?>
 data-request-confirm="<?=$form['confirm']?>"
 <?php endif ?>
@@ -10,10 +8,11 @@ data-request-success="<?=$form['success']?>"
 <?php endif ?>
 
 >
+<input type="hidden" name="event" value="<?=$eventName?>">
 <div class="row">
     <?php if(count($params)):?>
     <?php  foreach ($params as $key => $param):?>
-    <input type="hidden" name="<?=$formName.'['.$key.']'?>" value="<?=$param?>">
+    <input type="hidden" name="<?=$eventName.'['.$key.']'?>" value="<?=$param?>">
     <?php endforeach ?>
     <?php endif ?>
 
@@ -29,14 +28,14 @@ data-request-success="<?=$form['success']?>"
           $fieldWrapper = isset($field['field_wrapper'])?$field['field_wrapper']:'';
           $setting = $this->globalSetting();
     $fieldSetting = $this->fieldSetting($type);
-    $name = "{$formName}[{$key}]";
-    $uniqueIdKey = $formName.'-'.$key.$random;
+    $name = "{$eventName}[{$key}]";
+    $uniqueIdKey = $eventName.'-'.$key.$random;
     $preview = isset($field['preview'])?'has-preview':'';
     ?>
     <div class="<?=isset($setting['wrapper'])?$setting['wrapper']:''?> <?=isset($fieldSetting['wrapper'])?$fieldSetting['wrapper']:''?> <?=$wrapper?>  ">
         <?php if(isset($field['label']) && $type != 'file' && $type != 'checkbox'):?>
         <label for="<?=$uniqueIdKey?>" class="<?=isset($setting['field_label'])?$setting['field_label']:''?> <?=isset($fieldSetting['label'])?$fieldSetting['label']:''?>">
-            <?=$this->trans($field['label'])?> <?=isset($field['required'])?'<span class="field-required">*</span>':''?>
+            <?=$this->trans($field['label'])?> <?=(isset($field['required']) && $field['required'])?'<span class="field-required">*</span>':''?>
         </label>
         <?php endif ?>
         <div class="formyaml-<?=$type?> <?=isset($setting['field_wrapper'])?$setting['field_wrapper']:''?> <?=isset($fieldSetting['next_wrapper'])?$fieldSetting['next_wrapper']:''?> <?=$fieldWrapper?> <?=$mode?> <?=$preview?>">
@@ -46,20 +45,22 @@ data-request-success="<?=$form['success']?>"
                 $fieldId = isset($field['attributes']['id'])?$field['attributes']['id']:'';
                 $field['attributes']['class'] = $fieldSettingClass.' '.$fieldClass;
                 $field['attributes']['id'] = $uniqueIdKey.' '.$fieldId;
+             
             ?>
-            <?=$this->makePartial('types/'.$type, compact('field','name','originalName','formName','fieldSetting','uniqueIdKey','values','setting')) ?>
-            <div data-validate-for="<?=$key?>" class="invalid-feedback"></div>
+            <?=$this->makePartial('types/'.$type, compact('field','name','originalName','eventName','fieldSetting','uniqueIdKey','values','setting')) ?>
+            <div data-validate-for="field_<?=$originalName?>" class="formyaml-text__error" ></div>
+          
         </div>
 
     </div>
 
     <?php endforeach?>
     <?php endif ?>
-    
+
     <?php if (isset($form['buttons']) && count($form['buttons'])):?>
     <div class="formyaml-buttons col-md-12">
         <?php foreach ($form['buttons'] as $key => $button):?>
-        <?=$this->makePartial('buttons/'.$key, compact('button'))?>
+        <?=$this->makePartial('buttons/'.$button['theme'], compact('button'))?>
         <?php endforeach ?>
     </div>
     <?php endif ?>

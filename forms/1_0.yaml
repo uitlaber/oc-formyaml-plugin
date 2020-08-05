@@ -1,0 +1,10 @@
+fields:
+    1: { id: 1, label: 'Технологическое присоединение осуществляется в связи с', placeholder: '', type: radio, required: 1, wrapper: col-12, multiple: 'true', show: '1', form_id: 1, section: 'Общие данные', sort_order: 1, default: 'Новым технологическим присоединениям', rules: 'max:13', attributes: { class: aaaa }, options: { 'Новым технологическим присоединениям': 'Новым технологическим присоединениям', 'Сменой точки присоединения': 'Сменой точки присоединения', 'Изменением категории надежности': 'Изменением категории надежности', 'Перераспределение мощности': 'Перераспределение мощности' } }
+    12: { id: 12, label: ggg, placeholder: '', type: text, required: 0, wrapper: '', form_id: 1, section: 'Общие данные', sort_order: 12, default: '', rules: '', attributes: {  }, options: {  } }
+success: nextStep(data);
+buttons:
+    - { theme: link, text: Назад, type: button, href: '', attributes: [{ key: class, value: 'bidform-prev ' }, { key: onclick, value: prevStep() }, { key: style, value: 'display:none' }] }
+    - { theme: button, text: Далее, type: submit, href: '', attributes: [{ key: class, value: ' bidform-next ' }] }
+    - { theme: button, text: 'Сформировать заявку и отправить', type: submit, href: '', attributes: [{ key: class, value: bidform-finish }, { key: style, value: 'display:none' }, { key: data-request-data, value: 'multistep-finish:1' }, { key: data-request, value: onSubmit }] }
+multistep: 1
+name: fiz-88

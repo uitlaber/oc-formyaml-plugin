@@ -1,0 +1,7 @@
+success: nextStep(data);
+buttons:
+    - { theme: link, text: Назад, type: button, href: '', attributes: [{ key: class, value: 'bidform-prev ' }, { key: onclick, value: prevStep() }, { key: style, value: 'display:none' }] }
+    - { theme: button, text: Далее, type: submit, href: '', attributes: [{ key: class, value: ' bidform-next ' }] }
+    - { theme: button, text: 'Сформировать заявку и отправить', type: submit, href: '', attributes: [{ key: class, value: bidform-finish }, { key: style, value: 'display:none' }, { key: data-request-data, value: 'multistep-finish:1' }, { key: data-request, value: onSubmit }] }
+multistep: 1
+name: fiz-88

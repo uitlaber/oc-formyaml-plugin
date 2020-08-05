@@ -1,0 +1,12 @@
+list: $/uit/formyaml/models/submit/columns.yaml
+modelClass: Uit\Formyaml\Models\Submit
+title: Submits
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: true
+recordsPerPage: 20
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'uit/formyaml/submits/update/:id'

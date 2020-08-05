@@ -3,9 +3,11 @@
     if(!is_array($field['options']) ){
         $field['options'] = (new $field['options'])->pluck('name','id')->toArray();
     }
+
 ?>
 
 <select name="<?=$name?>" placeholder="<?=isset($field['placeholder'])?$this->trans($field['placeholder']):''?>"
+
 <?php if(isset($field['attributes']) && is_array($field['attributes'])):?>
 <?php foreach($field['attributes'] as $key => $value): ?>
 <?=$key?>="<?=$value?>"

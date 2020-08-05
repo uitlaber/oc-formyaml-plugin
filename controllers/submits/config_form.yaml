@@ -1,0 +1,10 @@
+name: Submits
+form: $/uit/formyaml/models/submit/fields.yaml
+modelClass: Uit\Formyaml\Models\Submit
+defaultRedirect: uit/formyaml/submits
+create:
+    redirect: 'uit/formyaml/submits/update/:id'
+    redirectClose: uit/formyaml/submits
+update:
+    redirect: uit/formyaml/submits
+    redirectClose: uit/formyaml/submits

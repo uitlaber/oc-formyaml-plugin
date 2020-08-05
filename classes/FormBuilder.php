@@ -16,27 +16,27 @@ class FormBuilder
     protected $pluginName;
     protected $layoutPath;
     protected $settings;
-    protected $form;
+    public $form;
 
-    public function __construct($pluginName)
+    public function __construct()
     {
         $this->settings = Settings::instance();
-        $this->pluginName = $pluginName;
+        $this->pluginName = 'uit/formyaml';
         $this->viewPath = plugins_path('uit/formyaml/partials/');
 
     }
 
-    public function generate($formName, $requestName = '', $params = [], $values = [])
+    public function generate($eventName,  $params = [], $values = [])
     {
         $yaml = new Yaml();
-        $form = $yaml->parseFile($this->fieldPath() . $formName . '.yaml');
-        return $this->makePartial('form', compact('form', 'formName', 'requestName', 'params', 'values'));
+        $form = $yaml->parseFile($this->fieldPath() . $eventName . '.yaml');
+        return $this->makePartial('form', compact('form', 'eventName',  'params', 'values'));
     }
 
-    public function parseYaml($formName)
+    public function parseYaml($eventName)
     {
         $yaml = new Yaml();
-        $this->form = $yaml->parseFile($this->fieldPath() . $formName . '.yaml');
+        $this->form = $yaml->parseFile($this->fieldPath() . $eventName . '.yaml');
 
     }
 
