@@ -45,9 +45,10 @@ data-request-success="<?=$form['success']?>"
                 $fieldId = isset($field['attributes']['id'])?$field['attributes']['id']:'';
                 $field['attributes']['class'] = $fieldSettingClass.' '.$fieldClass;
                 $field['attributes']['id'] = $uniqueIdKey.' '.$fieldId;
+
              
             ?>
-            <?=$this->makePartial('types/'.$type, compact('field','name','originalName','eventName','fieldSetting','uniqueIdKey','values','setting')) ?>
+            <?=$this->makePartial($this->getTypePartial($type), compact('field','name','originalName','eventName','fieldSetting','uniqueIdKey','values','setting')) ?>
             <div data-validate-for="field_<?=$originalName?>" class="formyaml-text__error" ></div>
           
         </div>

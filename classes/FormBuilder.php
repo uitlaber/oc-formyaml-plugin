@@ -1,14 +1,14 @@
 <?php namespace Uit\Formyaml\Classes;
 
 
-
+use File;
 use October\Rain\Parse\Yaml;
 use RainLab\Translate\Models\Message;
 use System\Traits\ViewMaker;
 use Uit\Formyaml\Models\Settings;
 use ValidationException;
 use Validator;
-
+use Cms\Classes\Theme;
 
 class FormBuilder
 {
@@ -30,7 +30,15 @@ class FormBuilder
     {
         $yaml = new Yaml();
         $form = $yaml->parseFile($this->fieldPath() . $eventName . '.yaml');
-        return $this->makePartial('form', compact('form', 'eventName',  'params', 'values'));
+        $theme_path = $this->getActiveThemePath();
+        return $this->makePartial('form', compact('form', 'eventName',  'params', 'values','theme_path'));
+    }
+
+
+    public function getActiveThemePath()
+    {
+        $theme = Theme::getActiveTheme();
+        return $theme->getPath();
     }
 
     public function parseYaml($eventName)
@@ -64,10 +72,23 @@ class FormBuilder
         return $this->settings;
     }
 
+    public function getTypePartial($type){
+
+        $user_type_path = $this->getActiveThemePath() . '/partials/types/_' . strtolower(basename($type)).'.htm';
+        $user_type = $this->getActiveThemePath().'/partials/types/'.$type;
+        $default_type = 'types/'.$type;
+        return   (File::exists($user_type_path))?$user_type:$default_type;
+
+    }
+
     public function trans($string, $params = [])
     {
-//        return $string;
-        return Message::trans($string, $params);
+        if(class_exists('Message')){
+            return Message::trans($string, $params);
+        }else{
+            return $string;
+        }
+        
     }
 
 

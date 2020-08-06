@@ -67,7 +67,7 @@ class Plugin extends PluginBase
         ];
     }
 
-    public function makeForm($plugin, $eventName ,  $params = [], $values = [])
+    public function makeForm($eventName ,  $params = [], $values = [])
     {
         return (new FormBuilder())->generate($eventName,  $params, $values);
     }
