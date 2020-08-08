@@ -85,19 +85,25 @@ class Formyaml extends ComponentBase
 
     public function onSubmit(){      
        
-        $eventName = post('event');
-        $time = time();
-        $data = post($eventName, []);
+        $formName = post('form_name');
+       
+        $data = post($formName, []);
+        
+        /**
+         * Тут к ключу добавляю префикс из за того что при валидаци возникает ошибка если ключь состоит из цифр
+         * И удаляю старый элемент массива 
+         */
         foreach ($data as $key => $val) {
             $data['field_'.$key] = $val;
             unset($data[$key]);
         }
-       
+
         $user = Auth::getUser();
-        Event::fire('before-store.'.$eventName, [$data, $user, $time]);
+        $eventBefore = Event::fire('formyaml.before.'.$formName, [post(), $user]);   
+        if(isset($eventBefore[0]) && $eventBefore[0]) return $eventBefore[0];
 
         $fb = new FormBuilder();
-        $fb->parseYaml($eventName);
+        $fb->parseYaml($formName);
         $form = $fb->form;
 
         if(!isset($form['fields']) || !count($form['fields'])) return;
@@ -112,7 +118,7 @@ class Formyaml extends ComponentBase
         foreach($fields as $key => $field){
             $keyModifid = 'field_'.$key;
             $required = '';
-            $attributes[$keyModifid] = $field['label'];
+            $attributes[$keyModifid] = '';
             if(isset($field['required']) && $field['required']){
                 $required = 'required';
             }
@@ -124,45 +130,59 @@ class Formyaml extends ComponentBase
                 $rules[$keyModifid] = [$required];
             }
             
-            if(isset($data[$keyModifid])){              
+            if(isset($data[$keyModifid])){    
+                       
                 $clearData[$keyModifid] = [
                     'key' => $key,
+                    'type' => $field['type'],
                     'label' => $field['label'], 
-                    'value' => $data[$keyModifid], 
+                    'value' => is_array($data[$keyModifid])?json_encode($data[$keyModifid]):$data[$keyModifid], 
                 ];
             }
         }
 
-       
-        // dd(session()->get($form['name']));
+        $eventBeforeValidate = Event::fire('formyaml.before.validate.'.$formName, [$data,$rules, $attributes ]);   
+        if(isset($eventBeforeValidate[0]) && $eventBeforeValidate[0]) return $eventBeforeValidate[0];
+
+
         $validation = Validator::make($data, $rules, [], $attributes);
         if ($validation->fails()) {
             throw new ValidationException($validation);
         }
 
+        $eventAfterValidate = Event::fire('formyaml.after.validate.'.$formName, [$data, $user]);   
+        if(isset($eventAfterValidate[0]) && $eventAfterValidate[0]) return $eventAfterValidate[0];
+
+
         if(isset($form['multistep']) && $form['multistep']){
-            if( $sessionData =  session()->get($form['name'])){
+            if( $sessionData =  session()->get($formName)){
                 $clearData = array_merge($clearData, $sessionData);
             }
-            session()->put($form['name'],$clearData);
+            session()->put($formName,$clearData);
         }
 
         if(isset($form['multistep']) && !post('multistep-finish', false)){
             return;
         }
-
        
         $submit = Submit::create([
-            'event' => $eventName,
+            'event' => $formName,
             'user_id' => (!is_null($user))?$user->id:null,
             'content' => array_values($clearData),
             'info' => $info
         ]);
-        if(isset($form['multistep']) && post('multistep-finish', false)){
-            Event::fire('after-store-multistep.'.$eventName,  [$data, $user, $submit, $time]);
+
+        session()->forget($formName);
+
+        if(isset($form['multistep'])){
+            $eventAfter = Event::fire('formyaml.after.store.multistep.'.$formName,  [post(), $user, $submit]);
         }else{
-            Event::fire('after-store.'.$eventName,  [$data, $user, $submit, $time]);
+            $eventAfter = Event::fire('formyaml.after.store.'.$formName,  [post(), $user, $submit]);
         }   
+
+        if(isset($eventAfter[0]) && $eventAfter[0]) return $eventAfter[0];
+
+
         return $submit; 
     }
 }

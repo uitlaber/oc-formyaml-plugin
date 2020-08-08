@@ -9,5 +9,4 @@ navigation:
         label: 'Логи форм'
         url: /uit/formyaml/submits
         icon: icon-database
-        permissions:
-            - formyaml.submits
+

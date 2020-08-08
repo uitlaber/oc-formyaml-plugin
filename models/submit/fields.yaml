@@ -19,26 +19,39 @@ fields:
     content:
         label: 'Веденные данные'       
         span: full
+        adding: false
+        deleting: false
         type: datatable
         columns:
             key: 
                 type: string
                 title: Ключь
+                readOnly: true
+            type: 
+                type: string
+                title: Тип поле 
+                readOnly: true       
             label: 
                 type: string
-                title: Ключь                
+                title: Метка  
+                readOnly: true              
             value:
                 type: string
                 title: Значение
+                readOnly: true
 
     info:
         label: 'Дополнительная информация'
         span: full
         type: datatable
+        adding: false
+        deleting: false
         columns:
             key: 
                 type: string
                 title: Ключь
+                readOnly: true
             value:
                 type: string
                 title: Значение
+                readOnly: true

@@ -8,11 +8,12 @@ data-request-success="<?=$form['success']?>"
 <?php endif ?>
 
 >
-<input type="hidden" name="event" value="<?=$eventName?>">
+<input type="hidden" name="form_name" value="<?=$formName?>">
 <div class="row">
+
     <?php if(count($params)):?>
     <?php  foreach ($params as $key => $param):?>
-    <input type="hidden" name="<?=$eventName.'['.$key.']'?>" value="<?=$param?>">
+    <input type="hidden" name="<?=$formName.'['.$key.']'?>" value="<?=$param?>">
     <?php endforeach ?>
     <?php endif ?>
 
@@ -28,12 +29,12 @@ data-request-success="<?=$form['success']?>"
           $fieldWrapper = isset($field['field_wrapper'])?$field['field_wrapper']:'';
           $setting = $this->globalSetting();
     $fieldSetting = $this->fieldSetting($type);
-    $name = "{$eventName}[{$key}]";
-    $uniqueIdKey = $eventName.'-'.$key.$random;
+    $name = "{$formName}[{$key}]";
+    $uniqueIdKey = $formName.'-'.$key.$random;
     $preview = isset($field['preview'])?'has-preview':'';
     ?>
     <div class="<?=isset($setting['wrapper'])?$setting['wrapper']:''?> <?=isset($fieldSetting['wrapper'])?$fieldSetting['wrapper']:''?> <?=$wrapper?>  ">
-        <?php if(isset($field['label']) && $type != 'file' && $type != 'checkbox'):?>
+        <?php if(isset($field['label']) && $type != 'file' && $type != 'checkbox' && $type != 'agree'):?>
         <label for="<?=$uniqueIdKey?>" class="<?=isset($setting['field_label'])?$setting['field_label']:''?> <?=isset($fieldSetting['label'])?$fieldSetting['label']:''?>">
             <?=$this->trans($field['label'])?> <?=(isset($field['required']) && $field['required'])?'<span class="field-required">*</span>':''?>
         </label>
@@ -48,7 +49,7 @@ data-request-success="<?=$form['success']?>"
 
              
             ?>
-            <?=$this->makePartial($this->getTypePartial($type), compact('field','name','originalName','eventName','fieldSetting','uniqueIdKey','values','setting')) ?>
+            <?=$this->makePartial($this->getTypePartial($type), compact('field','name','originalName','formName','fieldSetting','uniqueIdKey','values','setting')) ?>
             <div data-validate-for="field_<?=$originalName?>" class="formyaml-text__error" ></div>
           
         </div>

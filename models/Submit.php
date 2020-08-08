@@ -2,6 +2,8 @@
 
 use Model;
 use RainLab\User\Models\User;
+use System\Models\File;
+
 
 /**
  * Model
@@ -31,6 +33,24 @@ class Submit extends Model
     ];
 
     public $belongsTo = [
-        'user' => User::class
+        'user' => User::class,
     ];
+
+
+    public function getValue($key){
+        $value = '';
+        foreach($this->content as $c){
+            if($c['key'] == $key){
+                if($c['type'] == 'file'){
+                    $value = File::find($c['value']);
+                }else{
+                    $value = $c['value'];
+                }
+                continue;
+            }
+        }
+      
+        
+        return $value;
+    }
 }

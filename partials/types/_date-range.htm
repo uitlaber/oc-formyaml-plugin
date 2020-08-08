@@ -1,5 +1,5 @@
 <div class="div">
-    <input type="date" name="<?=$eventName?>[<?=$originalName?>_from]" placeholder="<?=isset($field['placeholder'])?$this->trans($field['placeholder']):''?>"
+    <input type="date" name="<?=$formName?>[<?=$originalName?>][from]" placeholder="<?=isset($field['placeholder'])?$this->trans($field['placeholder']):''?>"
     <?php if(isset($field['attributes']) && is_array($field['attributes'])):?>
     <?php foreach($field['attributes'] as $key => $value): ?>
     <?=$key?>="<?=$value?>"
@@ -22,7 +22,7 @@
 
         $field['attributes']['id']  = $newIds;
     ?>
-    <input type="date" name="<?=$eventName?>[<?=$originalName?>_to]" placeholder="<?=isset($field['placeholder'])?$this->trans($field['placeholder']):''?>"
+    <input type="date" name="<?=$formName?>[<?=$originalName?>][to]" placeholder="<?=isset($field['placeholder'])?$this->trans($field['placeholder']):''?>"
     <?php if(isset($field['attributes']) && is_array($field['attributes'])):?>
     <?php foreach($field['attributes'] as $key => $value): ?>
     <?=$key?>="<?=$value?>"

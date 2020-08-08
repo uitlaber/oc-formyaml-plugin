@@ -26,12 +26,12 @@ class FormBuilder
 
     }
 
-    public function generate($eventName,  $params = [], $values = [])
+    public function generate($formName,  $params = [], $values = [])
     {
         $yaml = new Yaml();
-        $form = $yaml->parseFile($this->fieldPath() . $eventName . '.yaml');
+        $form = $yaml->parseFile($this->fieldPath() . $formName . '.yaml');
         $theme_path = $this->getActiveThemePath();
-        return $this->makePartial('form', compact('form', 'eventName',  'params', 'values','theme_path'));
+        return $this->makePartial('form', compact('form', 'formName',  'params', 'values','theme_path'));
     }
 
 
@@ -41,10 +41,10 @@ class FormBuilder
         return $theme->getPath();
     }
 
-    public function parseYaml($eventName)
+    public function parseYaml($formName)
     {
         $yaml = new Yaml();
-        $this->form = $yaml->parseFile($this->fieldPath() . $eventName . '.yaml');
+        $this->form = $yaml->parseFile($this->fieldPath() . $formName . '.yaml');
 
     }
 
